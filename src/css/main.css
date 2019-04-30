@@ -1,0 +1,33 @@
+body {
+    font-family: Raleway, Arial, Helvetica, sans-serif;
+    min-width: 480px;
+}
+
+a {
+    color: darkorange;
+    transition: all 1s;
+}
+
+a:hover {
+    color: gold;
+    text-decoration: none;
+}
+
+.display-1 {
+    font-size: 5rem;
+}
+
+.display-2 {
+    font-size: 3rem;
+}
+
+.rounded-button {
+    background-color: maroon;
+    padding: 0.5rem;
+    border-radius: 2rem;
+    transition: all 1s;
+}
+
+.rounded-button:hover {
+    background-color: darkred;
+}
