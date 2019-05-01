@@ -25,8 +25,8 @@ export default class UserLoginForm extends React.Component{
       <>
       <div className='container-fluid mx-0 my-0 px-3 py-0'>
         <form className='form-group w-100'>
-          <input className='input-group-text w-100 my-3' type='text' id='input-username' onBlur={this.onDataChanged} placeholder='Username' />
-          <input className='input-group-text w-100 my-3' type='password' id='input-password' onBlur={this.onDataChanged} placeholder='Password' />
+          <input className='input-group-text w-100 my-3' type='text' autoComplete='username' id='input-username' onBlur={this.onDataChanged} placeholder='Username' />
+          <input className='input-group-text w-100 my-3' type='password' autoComplete='current-password' id='input-password' onBlur={this.onDataChanged} placeholder='Password' />
         </form>
       </div>
       </>

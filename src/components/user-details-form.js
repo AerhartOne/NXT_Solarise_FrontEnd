@@ -31,9 +31,9 @@ export default class UserDetailsForm extends React.Component{
       <>
       <div className='container-fluid mx-0 my-0 px-3 py-0'>
         <form className='form-group w-100'>
-          <input className='input-group-text w-100 my-3' type='text' id='input-username' onBlur={this.onDataChanged} placeholder='Username' />
-          <input className='input-group-text w-100 my-3' type='email' id='input-email' onBlur={this.onDataChanged} placeholder='Email' />
-          <input className='input-group-text w-100 my-3' type='password' id='input-password' onBlur={this.onDataChanged} placeholder='Password' />
+          <input className='input-group-text w-100 my-3' type='text' autoComplete='username' id='input-username' onBlur={this.onDataChanged} placeholder='Username' />
+          <input className='input-group-text w-100 my-3' type='email' autoComplete='username' id='input-email' onBlur={this.onDataChanged} placeholder='Email' />
+          <input className='input-group-text w-100 my-3' type='password' autoComplete='new-password' id='input-password' onBlur={this.onDataChanged} placeholder='Password' />
           <div className='container-fluid d-flex flex-row px-0 py-0 my-3'>
             <div className='col w-100 px-0 py-0'>
               <input className='input-group-text w-100 my-0' type='text' id='input-first-name' onBlur={this.onDataChanged} placeholder='First Name' />

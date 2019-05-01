@@ -1,0 +1,34 @@
+.landing-page-container {
+    /* background: radial-gradient(circle, rgb(230, 190, 200), rgb(200, 160, 120)); */
+    background: radial-gradient(circle, rgba(0,10,20, 0.9), rgba(0,0,0,0.5)), url("https://www.iliketowastemytime.com/sites/default/files/Evergreen-Mountain-Lookout-Sunset-by-Michael-Matti.jpg");
+    color: white;
+    height: 100vh;
+    overflow: hidden;
+    background-size: cover;
+}
+
+.sidebar {
+    background: radial-gradient(circle, rgb(50,50,50), rgb(30,30,30));
+}
+
+.map-point-li {
+    display: inline-block;
+    background: rgb(70,70,70);
+    transition: all 0.5s;
+    border: 1px solid transparent;
+}
+
+.map-point-li:hover {
+    border-left: 2rem solid orange;
+}
+
+.mapbox-embed {
+    display: block;
+    background: white;
+    color: darkslategray;
+}
+
+.save-mappoint-button {
+    font-size: 1.8rem;
+    font-weight: bold;
+}

@@ -1,13 +1,8 @@
-.landing-page-container {
+.main-dashboard-container {
     /* background: radial-gradient(circle, rgb(230, 190, 200), rgb(200, 160, 120)); */
     background: radial-gradient(circle, rgba(0,10,20, 0.9), rgba(0,0,0,0.5)), url("https://www.iliketowastemytime.com/sites/default/files/Evergreen-Mountain-Lookout-Sunset-by-Michael-Matti.jpg");
     color: white;
     height: 100vh;
     overflow: hidden;
     background-size: cover;
-}
-
-.main-button {
-    font-size: 1.8rem;
-    font-weight: bold;
 }
