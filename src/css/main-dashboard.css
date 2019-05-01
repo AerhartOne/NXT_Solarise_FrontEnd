@@ -11,6 +11,10 @@
     background: radial-gradient(circle, rgb(50,50,50), rgb(30,30,30));
 }
 
+.sidebar-top-panel {
+    background: rgb(50,50,50);
+}
+
 .map-point-li {
     display: inline-block;
     background: rgb(70,70,70);
