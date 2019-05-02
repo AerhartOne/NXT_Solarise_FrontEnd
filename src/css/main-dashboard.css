@@ -32,6 +32,10 @@
     color: darkslategray;
 }
 
+.mapbox-embed .mapboxgl-canvas {
+    left: 0;
+}
+
 .save-mappoint-button {
     font-size: 1.8rem;
     font-weight: bold;
