@@ -7,6 +7,10 @@
     background-size: cover;
 }
 
+div {
+    transition: all 0.5s;
+}
+
 .sidebar {
     background: radial-gradient(circle, rgb(50,50,50), rgb(30,30,30));
 }
@@ -27,16 +31,23 @@
 }
 
 .mapbox-embed {
-    display: block;
     background: white;
     color: darkslategray;
 }
 
-.mapbox-embed .mapboxgl-canvas {
-    left: 0;
+.mapboxgl-canvas {
+    position: inherit !important;
 }
 
 .save-mappoint-button {
     font-size: 1.8rem;
     font-weight: bold;
+}
+
+.info-readout {
+    height: auto;
+}
+
+.info-readout-hidden {
+    height: 0;
 }

@@ -21,6 +21,10 @@ a:hover {
     font-size: 3rem;
 }
 
+.display-3 {
+    font-size: 1.5rem;
+}
+
 .rounded-button {
     background-color: maroon;
     padding: 0.5rem;

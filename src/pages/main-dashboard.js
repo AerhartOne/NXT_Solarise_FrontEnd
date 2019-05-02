@@ -4,6 +4,7 @@ import '../css/main-dashboard.css';
 import BasicModal from '../containers/basic-modal'
 import ReactMapBoxGL, {Layer, Feature, Map} from 'react-mapbox-gl'
 import mapboxGL from 'mapbox-gl';
+import Axios from 'axios';
 
 mapboxGL.accessToken = 'pk.eyJ1Ijoic3V6dWtpc3RldmVuIiwiYSI6ImNqdWpwcDhhYzFuczE0ZXAzamNkMWpvd2sifQ.PAW2yuz30KwTEL983iIN_g';
 
@@ -13,8 +14,10 @@ export default class MainDashboard extends React.Component{
 
     this.state = {
       mapPoints: [],
-      mapCenter: [0,0],
-      zoom: 1
+      mapCenter: [10,10],
+      zoom: 1,
+      solarData: undefined,
+      loadingSolarData: true,
     }
 
     this.onMapClick = this.onMapClick.bind(this)
@@ -27,10 +30,11 @@ export default class MainDashboard extends React.Component{
   setupMap() {
     const map = new mapboxGL.Map({
       container: this.mapContainer,
-      style: "mapbox://styles/mapbox/streets-v11",
-      center: this.state.mapCenter
-    })
-
+      style: "mapbox://styles/mapbox/satellite-streets-v11",
+      center: this.state.mapCenter,
+      zoom: 2
+    }).setMinZoom(2)
+    
     const centerMarker = new mapboxGL.Marker({
       draggable: false
     }).setLngLat(this.state.mapCenter).addTo(map)
@@ -44,6 +48,18 @@ export default class MainDashboard extends React.Component{
       })
     })
 
+    map.on('movestart', () => {
+      this.setState({loadingSolarData: true})
+    })
+
+    map.on('moveend', () => {
+      this.updateSolarData()
+    })
+
+    map.on('zoomend', () => {
+      this.updateSolarData()
+    })
+
   }
 
   onMapClick(e) {
@@ -52,8 +68,24 @@ export default class MainDashboard extends React.Component{
     })
   }
 
+  updateSolarData() {
+    this.setState({loadingSolarData: true})
+    const lat = this.state.mapCenter[0]
+    const lng = this.state.mapCenter[1]
+
+    Axios.get("http://api.sunrise-sunset.org/json?lat=" + lat + "&lng=" + lng)
+    .then(result => {
+      console.log(result)
+      this.setState({ 
+        solarData: result.data.results,
+        loadingSolarData: false
+      })
+    })
+  }
+
   render(){
     const Map = ReactMapBoxGL({accessToken:'pk.eyJ1Ijoic3V6dWtpc3RldmVuIiwiYSI6ImNqdWpwcDhhYzFuczE0ZXAzamNkMWpvd2sifQ.PAW2yuz30KwTEL983iIN_g'})
+    const dateNow = new Date().toDateString()
     return (
       <>
       <div className='container-fluid d-flex flex-row justify-content-center align-items-center w-100 main-dashboard-container px-0'>
@@ -77,19 +109,50 @@ export default class MainDashboard extends React.Component{
           </div>
         </div>
         <div className='col-9 px-5 mx-0 h-100 d-flex flex-column justify-content-center align-items-center text-center'>
-          <h1 className='display-1 my-5 py-0 '>Pick a location.</h1>
-          <p> Latitude: {this.state.mapCenter[0]} </p>
-          <p> Longitude: {this.state.mapCenter[1]} </p>
+          { this.state.solarData !== undefined ?
+            <>
+              <h1 className='display-1 my-5 py-0 '>Solar data for {dateNow}.</h1>
+              <div className='container w-100 display-3'>
+                <div className='row'>
+                  <div className='col'>
+                    Latitude: {this.state.mapCenter[0]}
+                  </div>
+                  <div className='col'>
+                    Longitude: {this.state.mapCenter[1]}
+                  </div>
+                </div>
+                <div className='row'>
+                { this.state.loadingSolarData ?
+                  <>
+                    <div className='col'>
+                      Loading solar data...
+                    </div>
+                  </>
+                :
+                  <>
+                    <div className='col'>
+                      Sunrise: {this.state.solarData.sunrise} UTC
+                    </div>
+                    <div className='col'>
+                      Sunset: {this.state.solarData.sunset} UTC
+                    </div>
+                  </>
+                }
+                </div>
+              </div>
 
-          <button className='btn btn-lg btn-warning my-5 py-3 w-50 save-mappoint-button'>Save MapPoint</button>
+              <button className='btn btn-lg btn-warning my-5 py-3 w-50 save-mappoint-button'>Save MapPoint</button>
+            </>
+          :
+            <>
+              <h1 className='display-1 my-5 py-0 '>Pick a location and a date.</h1>
+              <p className='lead my-3 py-0 '>Or select a map point from the list on the left, if you've saved any before.</p>
+            </>
+          }
+
+
 
           <div ref={e1 => this.mapContainer = e1} className='mapbox-embed my-5 w-75 h-50' />
-
-          {/* <Map style="mapbox://styles/mapbox/streets-v11" containerStyle={{width: "75%", height: "60vh"}} center={this.state.mapCenter} className='mapbox-embed my-5'>
-            <Layer type="symbol" id="marker" layout={{ "icon-image": "marker-15" }}>
-              <Feature coordinates={this.state.mapCenter}/>
-            </Layer>
-          </Map> */}
 
         </div>
       </div>
