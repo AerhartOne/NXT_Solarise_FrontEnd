@@ -6,8 +6,6 @@ import UserDetailsForm from '../components/user-details-form'
 import UserLoginForm from '../components/user-login-form'
 import BasicModal from '../containers/basic-modal'
 
-import MainDashboard from '../pages/main-dashboard'
-
 export default class LandingPage extends React.Component{
   constructor(props) {
     super(props)

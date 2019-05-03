@@ -2,11 +2,8 @@ import React from 'react';
 import '../css/main.css';
 import '../css/main-dashboard.css';
 import BasicModal from '../containers/basic-modal'
-import ReactMapBoxGL, {Layer, Feature, Map} from 'react-mapbox-gl'
-import mapboxGL from 'mapbox-gl';
+import MapSelector from '../components/map-selector'
 import Axios from 'axios';
-
-mapboxGL.accessToken = 'pk.eyJ1Ijoic3V6dWtpc3RldmVuIiwiYSI6ImNqdWpwcDhhYzFuczE0ZXAzamNkMWpvd2sifQ.PAW2yuz30KwTEL983iIN_g';
 
 export default class MainDashboard extends React.Component{
   constructor(props) {
@@ -18,53 +15,19 @@ export default class MainDashboard extends React.Component{
       zoom: 1,
       solarData: undefined,
       loadingSolarData: true,
+      mapSelector: undefined
     }
 
-    this.onMapClick = this.onMapClick.bind(this)
-  }
-
-  componentDidMount() {
-    this.setupMap()
-  }
-
-  setupMap() {
-    const map = new mapboxGL.Map({
-      container: this.mapContainer,
-      style: "mapbox://styles/mapbox/satellite-streets-v11",
-      center: this.state.mapCenter,
-      zoom: 2
-    }).setMinZoom(2)
+    this.handleMapMove = this.handleMapMove.bind(this)
+    this.handleMapMoveEnd = this.handleMapMoveEnd.bind(this)
+    this.handleMapMoveStart = this.handleMapMoveStart.bind(this)
     
-    const centerMarker = new mapboxGL.Marker({
-      draggable: false
-    }).setLngLat(this.state.mapCenter).addTo(map)
-
-    map.on('move', () => {
-      const { lat, lng } = map.getCenter();
-      centerMarker.setLngLat([lng, lat])
-      this.setState({
-        mapCenter: [lat.toFixed(4), lng.toFixed(4)],
-        zoom: map.getZoom().toFixed(2)
-      })
-    })
-
-    map.on('movestart', () => {
-      this.setState({loadingSolarData: true})
-    })
-
-    map.on('moveend', () => {
-      this.updateSolarData()
-    })
-
-    map.on('zoomend', () => {
-      this.updateSolarData()
-    })
-
   }
 
-  onMapClick(e) {
+  handleMapMove(mapObject) {
     this.setState({
-      mapCenter: e.lnglat
+      loadingSolarData: true,
+      mapCenter: mapObject.state.mapCenter 
     })
   }
 
@@ -75,7 +38,6 @@ export default class MainDashboard extends React.Component{
 
     Axios.get("http://api.sunrise-sunset.org/json?lat=" + lat + "&lng=" + lng)
     .then(result => {
-      console.log(result)
       this.setState({ 
         solarData: result.data.results,
         loadingSolarData: false
@@ -83,8 +45,15 @@ export default class MainDashboard extends React.Component{
     })
   }
 
+  handleMapMoveStart(mapObject) {
+    this.updateSolarData()
+  }
+
+  handleMapMoveEnd(mapObject) {
+    this.updateSolarData()
+  }
+
   render(){
-    const Map = ReactMapBoxGL({accessToken:'pk.eyJ1Ijoic3V6dWtpc3RldmVuIiwiYSI6ImNqdWpwcDhhYzFuczE0ZXAzamNkMWpvd2sifQ.PAW2yuz30KwTEL983iIN_g'})
     const dateNow = new Date().toDateString()
     return (
       <>
@@ -150,9 +119,8 @@ export default class MainDashboard extends React.Component{
             </>
           }
 
-
-
-          <div ref={e1 => this.mapContainer = e1} className='mapbox-embed my-5 w-75 h-50' />
+          
+          <MapSelector id='map-selector' latlng={this.state.mapCenter} onMapMove={this.handleMapMove} onMapMoveEnd={this.handleMapMoveEnd} onMapMoveStart={this.handleMapMoveStart} solarDataListener={this}/>
 
         </div>
       </div>
