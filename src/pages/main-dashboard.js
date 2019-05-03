@@ -14,8 +14,7 @@ export default class MainDashboard extends React.Component{
       mapCenter: [10,10],
       zoom: 1,
       solarData: undefined,
-      loadingSolarData: true,
-      mapSelector: undefined
+      loadingSolarData: true
     }
 
     this.handleMapMove = this.handleMapMove.bind(this)

@@ -9,10 +9,7 @@ export default class MapSelector extends React.Component{
     super(props)
 
     this.state = {
-      mapCenter: this.props.latlng,
-      zoom: 2,
-      isMoving: false,
-      solarData: undefined
+      mapCenter: this.props.latlng
     }
 
   }
