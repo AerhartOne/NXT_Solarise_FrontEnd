@@ -14,6 +14,7 @@ export default class MainDashboard extends React.Component{
       mapCenter: [10,10],
       zoom: 1,
       solarData: undefined,
+      selectedDate: new Date().toDateString(),
       loadingSolarData: true
     }
 
