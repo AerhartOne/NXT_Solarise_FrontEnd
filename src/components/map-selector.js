@@ -9,7 +9,8 @@ export default class MapSelector extends React.Component{
     super(props)
 
     this.state = {
-      mapCenter: this.props.latlng
+      mapCenter: this.props.latlng,
+      mapObject: undefined
     }
 
   }
@@ -25,6 +26,8 @@ export default class MapSelector extends React.Component{
       center: this.state.mapCenter,
       zoom: 2
     }).setMinZoom(2)
+
+    this.setState({mapObject: map})
     
     const centerMarker = new mapboxGL.Marker({
       draggable: false

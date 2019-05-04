@@ -50,7 +50,7 @@ export default class MainDashboard extends React.Component{
     const lat = this.state.mapCenter[0]
     const lng = this.state.mapCenter[1]
 
-    Axios.get("http://api.sunrise-sunset.org/json?lat=" + lat + "&lng=" + lng)
+    Axios.get("http://api.sunrise-sunset.org/json?lat=" + lat + "&lng=" + lng + "&date=" + this.state.selectedDate)
     .then(result => {
       this.setState({ 
         solarData: result.data.results,
@@ -67,6 +67,13 @@ export default class MainDashboard extends React.Component{
     this.updateSolarData()
   }
 
+  handleDateChange = (e) => {
+    this.setState({
+      selectedDate: e.target.value
+    })
+    this.updateSolarData()
+  }
+
   handleMapPointSave = (e) => {
     e.preventDefault()
     let formData = new FormData()
@@ -80,8 +87,19 @@ export default class MainDashboard extends React.Component{
     })
   }
 
+  handleLoadMapPoint = (mapPointObject) => {
+    this.setState( {
+      mapCenter: [mapPointObject.state.longitude, mapPointObject.state.latitude],
+      selectedDate: mapPointObject.state.date
+    } )
+    this.mapSelector.state.mapObject.flyTo({
+      center: [mapPointObject.state.longitude, mapPointObject.state.latitude]
+    })
+    this.updateSolarData()
+  }
+
   render(){
-    const dateNow = new Date().toDateString()
+    const formattedCurrentDate = new Date().toISOString().slice(0, 10)
     return (
       <>
       <div className='container-fluid d-flex flex-row justify-content-center align-items-center w-100 main-dashboard-container px-0'>
@@ -98,7 +116,7 @@ export default class MainDashboard extends React.Component{
             <h2 className='display-2 text-center py-3 my-0'>Saved Map Points</h2>
             <ul className='px-0 my-0 w-100'>
               {this.state.mapPoints.map( mapPoint => { return (
-                <MapPointEntry pointName={mapPoint.point_name} latitude={mapPoint.latitude} longitude={mapPoint.longitude} />
+                <MapPointEntry key={mapPoint.point_name+"_"+mapPoint.latitude+"-"+mapPoint.longitude}  pointName={mapPoint.point_name} latitude={mapPoint.latitude} longitude={mapPoint.longitude} date={mapPoint.date} onEntryClick={this.handleLoadMapPoint} />
               )})
               }
             </ul>
@@ -107,8 +125,9 @@ export default class MainDashboard extends React.Component{
         <div className='col-9 px-5 mx-0 h-100 d-flex flex-column justify-content-center align-items-center text-center'>
           { this.state.solarData !== undefined ?
             <>
-              <h1 className='display-1 my-5 py-0 '>Solar data for {dateNow}.</h1>
+              <h1 className='display-1 my-5 py-0 '>Solar Data</h1>
               <div className='container w-100 display-3'>
+                
                 <div className='row'>
                   <div className='col'>
                     Latitude: {this.state.mapCenter[0]}
@@ -150,8 +169,8 @@ export default class MainDashboard extends React.Component{
             </>
           }
 
-          
-          <MapSelector id='map-selector' latlng={this.state.mapCenter} onMapMove={this.handleMapMove} onMapMoveEnd={this.handleMapMoveEnd} onMapMoveStart={this.handleMapMoveStart} solarDataListener={this}/>
+          <input type='date' className='form-control-lg w-50 my-3 text-center' onChange={this.handleDateChange} defaultValue={formattedCurrentDate} /> 
+          <MapSelector ref={mapObject => this.mapSelector = mapObject} id='map-selector' latlng={this.state.mapCenter} onMapMove={this.handleMapMove} onMapMoveEnd={this.handleMapMoveEnd} onMapMoveStart={this.handleMapMoveStart} solarDataListener={this}/>
 
         </div>
       </div>
