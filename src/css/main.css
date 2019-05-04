@@ -35,3 +35,7 @@ a:hover {
 .rounded-button:hover {
     background-color: darkred;
 }
+
+.modal-backdrop {
+    display: none;
+}

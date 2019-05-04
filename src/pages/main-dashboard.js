@@ -1,12 +1,10 @@
 import React from 'react';
 import '../css/main.css';
 import '../css/main-dashboard.css';
-import UserManagement from '../utils/user_management'
-import BasicModal from '../containers/basic-modal'
-import MapSelector from '../components/map-selector'
+import MapSelector from '../components/map-selector';
+import LogoutButton from '../components/logout-button';
+import MapPointEntry from '../components/map-point-entry';
 import Axios from 'axios';
-import {Redirect} from 'react-router-dom'
-import LogoutButton from '../components/logout-button'
 
 export default class MainDashboard extends React.Component{
   constructor(props) {
@@ -26,6 +24,18 @@ export default class MainDashboard extends React.Component{
     this.handleMapMoveEnd = this.handleMapMoveEnd.bind(this)
     this.handleMapMoveStart = this.handleMapMoveStart.bind(this)
     
+  }
+
+  componentDidMount() {
+    this.getMapPointData()
+  }
+
+  getMapPointData() {
+    Axios.get("http://localhost:5000/api/users/self/map_points", {headers: { 'Authorization': 'Bearer ' + localStorage.getItem('jwt_token') }})
+    .then(result => {
+      this.setState({mapPoints: result.data})
+      console.log(result)
+    })
   }
 
   handleMapMove(mapObject) {
@@ -57,6 +67,19 @@ export default class MainDashboard extends React.Component{
     this.updateSolarData()
   }
 
+  handleMapPointSave = (e) => {
+    e.preventDefault()
+    let formData = new FormData()
+    formData.append('point_name', "New Point 1")
+    formData.append('latitude', this.state.mapCenter[0])
+    formData.append('longitude', this.state.mapCenter[1])
+    formData.append('date', this.state.selectedDate)
+    Axios.post("http://localhost:5000/api/map_points/new", formData, {headers: { 'Authorization': 'Bearer ' + localStorage.getItem('jwt_token') }})
+    .then(result => {
+      this.getMapPointData()
+    })
+  }
+
   render(){
     const dateNow = new Date().toDateString()
     return (
@@ -74,10 +97,10 @@ export default class MainDashboard extends React.Component{
           <div>
             <h2 className='display-2 text-center py-3 my-0'>Saved Map Points</h2>
             <ul className='px-0 my-0 w-100'>
-              <li className='map-point-li w-100 py-3 px-3 my-1'>Test Location 1</li>
-              <li className='map-point-li w-100 py-3 px-3 my-1'>Test Location 2</li>
-              <li className='map-point-li w-100 py-3 px-3 my-1'>Test Location 3</li>
-              <li className='map-point-li w-100 py-3 px-3 my-1'>Test Location 4</li>
+              {this.state.mapPoints.map( mapPoint => { return (
+                <MapPointEntry pointName={mapPoint.point_name} latitude={mapPoint.latitude} longitude={mapPoint.longitude} />
+              )})
+              }
             </ul>
           </div>
         </div>
@@ -114,7 +137,11 @@ export default class MainDashboard extends React.Component{
                 </div>
               </div>
 
-              <button className='btn btn-lg btn-warning my-5 py-3 w-50 save-mappoint-button'>Save MapPoint</button>
+              { this.state.loadingSolarData ?
+                <button className='btn btn-lg btn-dark my-5 py-3 w-50 save-mappoint-button' disabled>Save MapPoint</button>
+              :
+                <button className='btn btn-lg btn-warning my-5 py-3 w-50 save-mappoint-button' onClick={this.handleMapPointSave} >Save MapPoint</button>
+              }
             </>
           :
             <>

@@ -42,11 +42,16 @@ export default class SignUpModalForm extends React.Component{
     }
     UserManagement.signupUser(data)
     .then( () => {
-      UserManagement.loginUser(data)
+      let loginData = {
+        username: this.state.username,
+        password: this.state.password
+      }
+      UserManagement.loginUser(loginData)
+      .then( ()  => {
+        this.setState({ signupCompleted: true })
+      })
     })
-    .then( ()  => {
-      this.setState({ signupCompleted: true })
-    })
+    
   }
 
   render(){
