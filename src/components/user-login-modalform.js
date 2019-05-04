@@ -33,6 +33,10 @@ export default class UserLoginModalForm extends React.Component{
     .then(() => {
       this.setState({loginCompleted: true})
     })
+    .catch(error => {
+        console.log(error.response)
+        alert(error.response.data.msg)
+    })
   }
 
   render(){
