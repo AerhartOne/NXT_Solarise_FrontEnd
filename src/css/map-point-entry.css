@@ -1,0 +1,18 @@
+.map-point-entry {
+    display: inline-block;
+    background: rgb(70,70,70);
+    transition: all 0.5s;
+    border: 1px solid transparent;
+    color: white;
+    width: 100%;
+    text-align: left;
+    margin: 2px 0px;
+}
+
+.map-point-entry li {
+    display: inline-block;
+}
+
+.map-point-entry:hover {
+    border-left: 2rem solid orange;
+}

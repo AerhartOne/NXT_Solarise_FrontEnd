@@ -1,14 +1,11 @@
 import React from 'react';
-
+import '../css/map-point-entry.css';
 
 export default class MapPointEntry extends React.Component {
     constructor(props) {
         super(props)
         this.state = {
-            pointName: this.props.pointName,
-            latitude: this.props.latitude,
-            longitude: this.props.longitude,
-            date: this.props.date
+            pointData: this.props.pointData
         }
     }
 
@@ -18,7 +15,7 @@ export default class MapPointEntry extends React.Component {
 
     render() {
         return (
-            <li onClick={this.handleClick} className='map-point-li w-100 py-3 px-3 my-1'>{this.state.pointName} : {this.state.latitude}, {this.state.longitude} : {this.state.date}</li>
+            <button className='map-point-entry'><li onClick={this.handleClick} className='w-100 py-3 px-3 my-1'>{this.state.pointData.point_name} : {this.state.pointData.latitude}, {this.state.pointData.longitude} : {this.state.pointData.date}</li></button>
         )
     }
 }

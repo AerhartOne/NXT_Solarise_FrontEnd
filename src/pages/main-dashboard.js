@@ -18,6 +18,7 @@ export default class MainDashboard extends React.Component{
       selectedDate: new Date().toDateString(),
       loadingSolarData: true,
       redirectToLanding: false,
+      saveMapPointEnabled: true
     }
 
     this.handleMapMove = this.handleMapMove.bind(this)
@@ -68,10 +69,16 @@ export default class MainDashboard extends React.Component{
   }
 
   handleDateChange = (e) => {
+    let canSave = false
+    if (e.target.value !== '') {
+      canSave = true
+    }
     this.setState({
-      selectedDate: e.target.value
+      selectedDate: e.target.value,
+      saveMapPointEnabled: canSave
     })
     this.updateSolarData()
+
   }
 
   handleMapPointSave = (e) => {
@@ -89,12 +96,13 @@ export default class MainDashboard extends React.Component{
 
   handleLoadMapPoint = (mapPointObject) => {
     this.setState( {
-      mapCenter: [mapPointObject.state.longitude, mapPointObject.state.latitude],
-      selectedDate: mapPointObject.state.date
+      mapCenter: [mapPointObject.state.pointData.longitude, mapPointObject.state.pointData.latitude],
+      selectedDate: mapPointObject.state.pointData.date
     } )
     this.mapSelector.state.mapObject.flyTo({
-      center: [mapPointObject.state.longitude, mapPointObject.state.latitude]
+      center: [mapPointObject.state.pointData.longitude, mapPointObject.state.pointData.latitude]
     })
+    console.log(this.state)
     this.updateSolarData()
   }
 
@@ -116,7 +124,7 @@ export default class MainDashboard extends React.Component{
             <h2 className='display-2 text-center py-3 my-0'>Saved Map Points</h2>
             <ul className='px-0 my-0 w-100'>
               {this.state.mapPoints.map( mapPoint => { return (
-                <MapPointEntry key={mapPoint.id}  pointName={mapPoint.point_name} latitude={mapPoint.latitude} longitude={mapPoint.longitude} date={mapPoint.date} onEntryClick={this.handleLoadMapPoint} />
+                <MapPointEntry key={mapPoint.id} pointData={mapPoint} pointID={mapPoint.id} onEntryClick={this.handleLoadMapPoint} />
               )})
               }
             </ul>
@@ -156,10 +164,10 @@ export default class MainDashboard extends React.Component{
                 </div>
               </div>
 
-              { this.state.loadingSolarData ?
-                <button className='btn btn-lg btn-dark my-5 py-3 w-50 save-mappoint-button' disabled>Save MapPoint</button>
-              :
+              { this.state.saveMapPointEnabled && !this.state.loadingSolarData ?
                 <button className='btn btn-lg btn-warning my-5 py-3 w-50 save-mappoint-button' onClick={this.handleMapPointSave} >Save MapPoint</button>
+                :
+                <button className='btn btn-lg btn-dark my-5 py-3 w-50 save-mappoint-button' disabled>Save MapPoint</button>
               }
             </>
           :
