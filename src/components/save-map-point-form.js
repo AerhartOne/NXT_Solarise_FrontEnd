@@ -1,4 +1,6 @@
 import React from 'react';
+import Axios from 'axios';
+
 
 export default class SaveMapPointForm extends React.Component {
 
@@ -16,14 +18,21 @@ export default class SaveMapPointForm extends React.Component {
     handleMapPointSave = (e) => {
         e.preventDefault()
         let formData = new FormData()
-        formData.append('point_name', pointName)
-        formData.append('latitude', this.state.latitude)
-        formData.append('longitude', this.state.longitude)
-        formData.append('date', this.state.selectedDate)
+        formData.append('point_name', this.state.pointName)
+        formData.append('latitude', this.props.latitude)
+        formData.append('longitude', this.props.longitude)
+        formData.append('date', this.props.date)
         Axios.post("http://localhost:5000/api/map_points/new", formData, {headers: { 'Authorization': 'Bearer ' + localStorage.getItem('jwt_token') }})
         .then(result => {
-          this.getMapPointData()
+            document.querySelector('#input-point-name').value = ''
+            this.props.dataRefresh()
         })
+      }
+
+      onDataChanged = (e) => {
+          this.setState({
+              pointName: e.target.value
+          })
       }
 
     render() {
@@ -31,11 +40,10 @@ export default class SaveMapPointForm extends React.Component {
             <form className='form-group w-100'>
             <div className='modal-body'>
               <div className='container-fluid mx-0 my-0 px-3 py-0'>
-                <input className='input-group-text w-100 my-3' type='text' autoComplete='username' id='input-point-name' onBlur={this.onDataChanged} placeholder='Point Name' />
-                <input className='input-group-text w-100 my-3' type='password' autoComplete='current-password' id='input-password' onBlur={this.onDataChanged} placeholder='Password' />
+                <input className='input-group-text w-100 my-3' type='text' id='input-point-name' onChange={this.onDataChanged} placeholder='Point Name' />
               </div>
               <div className='modal-footer'>
-                <button className='btn btn-lg btn-success w-100' onClick={this.handleMapPointSave}>Save Map Point</button>
+                <button type='submit' className='btn btn-lg btn-success w-100' data-dismiss='modal' onClick={this.handleMapPointSave} >Save Map Point</button>
               </div>
             </div>
             </form>

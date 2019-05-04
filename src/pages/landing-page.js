@@ -44,17 +44,17 @@ export default class LandingPage extends React.Component{
           <div className='container w-100 py-0 my-0 d-flex justify-content-center align-items-center'>
             <div className='row d-flex justify-content-center align-items-center w-100'>
               <div className='col d-flex justify-content-center align-items-center'>
-                <button data-toggle='modal' data-target='#landing-modal' onClick={this.onSignInButtonClicked} className='btn btn-lg btn-success main-button mx-3 my-5 py-3 w-100' >Sign in</button>
+                <button data-toggle='modal' data-target='#modal-basic' onClick={this.onSignInButtonClicked} className='btn btn-lg btn-success main-button mx-3 my-5 py-3 w-100' >Sign in</button>
               </div>
               <div className='col d-flex justify-content-center align-items-center'>
-                <button href='#' data-toggle='modal' data-target='#landing-modal' onClick={this.onSignUpButtonClicked} className='btn btn-lg btn-danger main-button mx-3 my-5 py-3 w-100'>Sign up</button>
+                <button href='#' data-toggle='modal' data-target='#modal-basic' onClick={this.onSignUpButtonClicked} className='btn btn-lg btn-danger main-button mx-3 my-5 py-3 w-100'>Sign up</button>
               </div>
             </div>
           </div>
         </div>
       </div>
 
-      <BasicModal id='user-modal' modalTitle={this.state.modalCaption} modalButtonText={this.state.modalCaption}>
+      <BasicModal id='user-modal' modalTitle={this.state.modalCaption}>
           {this.state.formType}
       </BasicModal>
       </>

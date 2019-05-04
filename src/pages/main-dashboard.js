@@ -4,7 +4,10 @@ import '../css/main-dashboard.css';
 import MapSelector from '../components/map-selector';
 import LogoutButton from '../components/logout-button';
 import MapPointEntry from '../components/map-point-entry';
+import BasicModal from '../containers/basic-modal';
 import Axios from 'axios';
+import EditUserDetailsModalForm from '../components/user-edit-modalform';
+import SaveMapPointForm from '../components/save-map-point-form';
 
 export default class MainDashboard extends React.Component{
   constructor(props) {
@@ -15,10 +18,12 @@ export default class MainDashboard extends React.Component{
       mapCenter: [10,10],
       zoom: 1,
       solarData: undefined,
-      selectedDate: new Date().toDateString(),
+      selectedDate: new Date().toISOString().slice(0, 10),
       loadingSolarData: true,
       redirectToLanding: false,
-      saveMapPointEnabled: true
+      saveMapPointEnabled: true,
+      basicModalContents: null,
+      modalTitle: ''
     }
     
   }
@@ -102,6 +107,20 @@ export default class MainDashboard extends React.Component{
     this.updateSolarData()
   }
 
+  handleSettingsClick = (e) => {
+    this.setState({
+      basicModalContents: <EditUserDetailsModalForm />,
+      modalTitle: 'Edit User Settings'
+    })
+  }
+
+  handleSaveMapPointClick = (e) => {
+    this.setState({
+      basicModalContents: <SaveMapPointForm latitude={this.state.mapCenter[0]} longitude={this.state.mapCenter[1]} dataRefresh={this.getMapPointData} date={this.state.selectedDate} />,
+      modalTitle: 'Save Map Point'
+    })
+  }
+
   render(){
     const formattedCurrentDate = new Date().toISOString().slice(0, 10)
     return (
@@ -113,7 +132,7 @@ export default class MainDashboard extends React.Component{
               <LogoutButton />
             </div>
             <div className='col'>
-              <button className='btn btn-lg w-100 btn-info'>Settings</button>
+              <button className='btn btn-lg w-100 btn-info' data-toggle='modal' data-target='#modal-basic' onClick={this.handleSettingsClick}>Settings</button>
             </div>
           </div>
           <div>
@@ -161,7 +180,7 @@ export default class MainDashboard extends React.Component{
               </div>
 
               { this.state.saveMapPointEnabled && !this.state.loadingSolarData ?
-                <button className='btn btn-lg btn-warning my-5 py-3 w-50 save-mappoint-button' onClick={this.handleMapPointSave} >Save MapPoint</button>
+                <button className='btn btn-lg btn-warning my-5 py-3 w-50 save-mappoint-button' data-toggle='modal' data-target='#modal-basic' onClick={this.handleSaveMapPointClick} >Save MapPoint</button>
                 :
                 <button className='btn btn-lg btn-dark my-5 py-3 w-50 save-mappoint-button' disabled>Save MapPoint</button>
               }
@@ -178,6 +197,11 @@ export default class MainDashboard extends React.Component{
 
         </div>
       </div>
+
+      <BasicModal id='user-modal' modalTitle={this.state.modalTitle}>
+          {this.state.basicModalContents}
+      </BasicModal>
+
       </>
     );
   }

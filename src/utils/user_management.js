@@ -33,4 +33,16 @@ export default class UserManagement {
         })
     }
 
+    static editUser(userDetails) {
+        let formData = new FormData()
+        formData.append('email', userDetails.email)
+        formData.append('password', userDetails.password)
+        formData.append('first_name', userDetails.firstName)
+        formData.append('last_name', userDetails.lastName)
+        return Axios.post("http://localhost:5000/api/users/self/edit", formData, {headers: {'Authorization': 'Bearer ' + localStorage.getItem('jwt_token')}})
+        .then(result => {
+          console.log(result)
+        })
+    }
+
 }
