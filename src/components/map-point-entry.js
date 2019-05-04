@@ -1,6 +1,7 @@
 import React from 'react';
 import '../css/map-point-entry.css';
 import Axios from 'axios';
+import URLManagement from '../utils/url_management'
 
 export default class MapPointEntry extends React.Component {
     constructor(props) {
@@ -17,7 +18,7 @@ export default class MapPointEntry extends React.Component {
     handleDelete = (e) => {
         let formData = new FormData()
         formData.append('map_point_id', this.state.pointData.id)
-        Axios.post("http://localhost:5000/api/map_points/delete", formData, {headers: { 'Authorization': 'Bearer ' + localStorage.getItem('jwt_token') }})
+        Axios.post(URLManagement.baseAPIDomain + "/map_points/delete", formData, {headers: { 'Authorization': 'Bearer ' + localStorage.getItem('jwt_token') }})
         .then( result => {
             console.log(result)
             this.props.updateMapPointsCallback()

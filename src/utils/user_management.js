@@ -1,5 +1,6 @@
 import React from 'react';
 import Axios from 'axios';
+import URLManagement from '../utils/url_management';
 
 export default class UserManagement {
 
@@ -7,7 +8,7 @@ export default class UserManagement {
         let formData = new FormData()
         formData.append('username', userDetails.username)
         formData.append('password', userDetails.password)
-        return Axios.post("http://localhost:5000/api/users/login", formData)
+        return Axios.post(URLManagement.baseAPIDomain + "/users/login", formData)
         .then(result => {
             localStorage.setItem('jwt_token', result.data.access_token)
             localStorage.setItem('refresh_token', result.data.refresh_token)
@@ -27,7 +28,7 @@ export default class UserManagement {
         formData.append('password', userDetails.password)
         formData.append('first_name', userDetails.firstName)
         formData.append('last_name', userDetails.lastName)
-        return Axios.post("http://localhost:5000/api/users/new", formData)
+        return Axios.post(URLManagement.baseAPIDomain + "/users/new", formData)
         .then(result => {
           console.log(result)
         })
@@ -39,7 +40,7 @@ export default class UserManagement {
         formData.append('password', userDetails.password)
         formData.append('first_name', userDetails.firstName)
         formData.append('last_name', userDetails.lastName)
-        return Axios.post("http://localhost:5000/api/users/self/edit", formData, {headers: {'Authorization': 'Bearer ' + localStorage.getItem('jwt_token')}})
+        return Axios.post(URLManagement.baseAPIDomain + "/users/self/edit", formData, {headers: {'Authorization': 'Bearer ' + localStorage.getItem('jwt_token')}})
         .then(result => {
           console.log(result)
         })

@@ -8,6 +8,7 @@ import BasicModal from '../containers/basic-modal';
 import Axios from 'axios';
 import EditUserDetailsModalForm from '../components/user-edit-modalform';
 import SaveMapPointForm from '../components/save-map-point-form';
+import URLManagement from '../utils/url_management';
 
 export default class MainDashboard extends React.Component{
   constructor(props) {
@@ -33,7 +34,7 @@ export default class MainDashboard extends React.Component{
   }
 
   getMapPointData = () => {
-    Axios.get("http://localhost:5000/api/users/self/map_points", {headers: { 'Authorization': 'Bearer ' + localStorage.getItem('jwt_token') }})
+    Axios.get(URLManagement.baseAPIDomain + "/users/self/map_points", {headers: { 'Authorization': 'Bearer ' + localStorage.getItem('jwt_token') }})
     .then(result => {
       this.setState({mapPoints: result.data})
       console.log(result)
@@ -89,7 +90,7 @@ export default class MainDashboard extends React.Component{
     formData.append('latitude', this.state.mapCenter[0])
     formData.append('longitude', this.state.mapCenter[1])
     formData.append('date', this.state.selectedDate)
-    Axios.post("http://localhost:5000/api/map_points/new", formData, {headers: { 'Authorization': 'Bearer ' + localStorage.getItem('jwt_token') }})
+    Axios.post(URLManagement.baseAPIDomain + "/map_points/new", formData, {headers: { 'Authorization': 'Bearer ' + localStorage.getItem('jwt_token') }})
     .then(result => {
       this.getMapPointData()
     })

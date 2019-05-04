@@ -1,5 +1,6 @@
 import React from 'react';
 import Axios from 'axios';
+import URLManagement from '../utils/url_management';
 
 
 export default class SaveMapPointForm extends React.Component {
@@ -12,7 +13,7 @@ export default class SaveMapPointForm extends React.Component {
             latitude: this.props.latitude,
             longitude: this.props.longitude,
             selectedDate: this.props.date
-        }    
+        }
     }
 
     handleMapPointSave = (e) => {
@@ -22,7 +23,7 @@ export default class SaveMapPointForm extends React.Component {
         formData.append('latitude', this.props.latitude)
         formData.append('longitude', this.props.longitude)
         formData.append('date', this.props.date)
-        Axios.post("http://localhost:5000/api/map_points/new", formData, {headers: { 'Authorization': 'Bearer ' + localStorage.getItem('jwt_token') }})
+        Axios.post(URLManagement.baseAPIDomain + "/map_points/new", formData, {headers: { 'Authorization': 'Bearer ' + localStorage.getItem('jwt_token') }})
         .then(result => {
             document.querySelector('#input-point-name').value = ''
             this.props.dataRefresh()

@@ -3,6 +3,7 @@ import '../css/main.css';
 import Axios from 'axios';
 import UserManagement from '../utils/user_management';
 import { Redirect, withRouter } from 'react-router-dom';
+import URLManagement from '../utils/url_management';
 
 export default class EditUserDetailsModalForm extends React.Component{
   constructor(props) {
@@ -23,7 +24,7 @@ export default class EditUserDetailsModalForm extends React.Component{
   }
 
   getUserData = () => {
-    Axios.get("http://localhost:5000/api/users/self", {headers: {'Authorization': 'Bearer ' + localStorage.getItem('jwt_token')}})
+    Axios.get(URLManagement.baseAPIDomain + "/users/self", {headers: {'Authorization': 'Bearer ' + localStorage.getItem('jwt_token')}})
     .then(result => {
       console.log(result)
       this.setState({
