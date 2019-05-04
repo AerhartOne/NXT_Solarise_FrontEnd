@@ -1,5 +1,6 @@
 import React from 'react';
 import '../css/map-point-entry.css';
+import Axios from 'axios';
 
 export default class MapPointEntry extends React.Component {
     constructor(props) {
@@ -13,9 +14,33 @@ export default class MapPointEntry extends React.Component {
         this.props.onEntryClick(this)
     }
 
+    handleDelete = (e) => {
+        let formData = new FormData()
+        formData.append('map_point_id', this.state.pointData.id)
+        Axios.post("http://localhost:5000/api/map_points/delete", formData, {headers: { 'Authorization': 'Bearer ' + localStorage.getItem('jwt_token') }})
+        .then( result => {
+            console.log(result)
+            this.props.updateMapPointsCallback()
+        })
+    }
+
     render() {
         return (
-            <button className='map-point-entry'><li onClick={this.handleClick} className='w-100 py-3 px-3 my-1'>{this.state.pointData.point_name} : {this.state.pointData.latitude}, {this.state.pointData.longitude} : {this.state.pointData.date}</li></button>
+            <>
+            <li className='w-100 my-1'>
+            <div className='container-fluid mx-0 px-0 d-flex flex-row'>
+                <div onClick={this.handleClick} className='col-11 mx-0 px-0'>
+                    <button className='map-point-entry h-100 px-3'>{this.state.pointData.point_name} : {this.state.pointData.latitude}, {this.state.pointData.longitude} : {this.state.pointData.date}</button>
+                </div>
+                {/* <div className='col-1 mx-0 px-0'>
+                    <button className='btn btn-sm btn-info w-100'>Edit</button>
+                </div> */}
+                <div onClick={this.handleDelete} className='col-1 mx-0 px-0'>
+                    <button className='btn btn-sm btn-danger w-100 h-100 px-3'>&times;</button>
+                </div>
+            </div>
+            </li>
+            </>
         )
     }
 }

@@ -2,7 +2,7 @@
     display: inline-block;
     background: rgb(70,70,70);
     transition: all 0.5s;
-    border: 1px solid transparent;
+    border: 0px solid transparent;
     color: white;
     width: 100%;
     text-align: left;
@@ -15,4 +15,11 @@
 
 .map-point-entry:hover {
     border-left: 2rem solid orange;
+}
+
+.map-point-delete-button {
+    display: block;
+    background: darkred;
+    border: 0px solid transparent;
+    color: white;
 }

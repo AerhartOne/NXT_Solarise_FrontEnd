@@ -20,10 +20,6 @@ export default class MainDashboard extends React.Component{
       redirectToLanding: false,
       saveMapPointEnabled: true
     }
-
-    this.handleMapMove = this.handleMapMove.bind(this)
-    this.handleMapMoveEnd = this.handleMapMoveEnd.bind(this)
-    this.handleMapMoveStart = this.handleMapMoveStart.bind(this)
     
   }
 
@@ -31,7 +27,7 @@ export default class MainDashboard extends React.Component{
     this.getMapPointData()
   }
 
-  getMapPointData() {
+  getMapPointData = () => {
     Axios.get("http://localhost:5000/api/users/self/map_points", {headers: { 'Authorization': 'Bearer ' + localStorage.getItem('jwt_token') }})
     .then(result => {
       this.setState({mapPoints: result.data})
@@ -39,14 +35,14 @@ export default class MainDashboard extends React.Component{
     })
   }
 
-  handleMapMove(mapObject) {
+  handleMapMove = (mapObject) => {
     this.setState({
       loadingSolarData: true,
       mapCenter: mapObject.state.mapCenter 
     })
   }
 
-  updateSolarData() {
+  updateSolarData = () => {
     this.setState({loadingSolarData: true})
     const lat = this.state.mapCenter[0]
     const lng = this.state.mapCenter[1]
@@ -60,11 +56,11 @@ export default class MainDashboard extends React.Component{
     })
   }
 
-  handleMapMoveStart(mapObject) {
+  handleMapMoveStart = (mapObject) => {
     this.updateSolarData()
   }
 
-  handleMapMoveEnd(mapObject) {
+  handleMapMoveEnd = (mapObject) => {
     this.updateSolarData()
   }
 
@@ -124,7 +120,7 @@ export default class MainDashboard extends React.Component{
             <h2 className='display-2 text-center py-3 my-0'>Saved Map Points</h2>
             <ul className='px-0 my-0 w-100'>
               {this.state.mapPoints.map( mapPoint => { return (
-                <MapPointEntry key={mapPoint.id} pointData={mapPoint} pointID={mapPoint.id} onEntryClick={this.handleLoadMapPoint} />
+                <MapPointEntry key={mapPoint.id} pointData={mapPoint} updateMapPointsCallback={this.getMapPointData} onEntryClick={this.handleLoadMapPoint} />
               )})
               }
             </ul>
