@@ -1,9 +1,12 @@
 import React from 'react';
 import '../css/main.css';
 import '../css/main-dashboard.css';
+import UserManagement from '../utils/user_management'
 import BasicModal from '../containers/basic-modal'
 import MapSelector from '../components/map-selector'
 import Axios from 'axios';
+import {Redirect} from 'react-router-dom'
+import LogoutButton from '../components/logout-button'
 
 export default class MainDashboard extends React.Component{
   constructor(props) {
@@ -15,7 +18,8 @@ export default class MainDashboard extends React.Component{
       zoom: 1,
       solarData: undefined,
       selectedDate: new Date().toDateString(),
-      loadingSolarData: true
+      loadingSolarData: true,
+      redirectToLanding: false,
     }
 
     this.handleMapMove = this.handleMapMove.bind(this)
@@ -61,7 +65,7 @@ export default class MainDashboard extends React.Component{
         <div className='col-3 px-0 py-0 mx-0 sidebar h-100'>
           <div className='container-fluid d-flex flex-row text-center py-3 sidebar-top-panel'>
             <div className='col'>
-              <button className='btn btn-lg w-100 btn-danger'>Log Out</button>
+              <LogoutButton />
             </div>
             <div className='col'>
               <button className='btn btn-lg w-100 btn-info'>Settings</button>

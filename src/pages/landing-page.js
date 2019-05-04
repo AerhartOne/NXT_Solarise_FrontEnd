@@ -2,9 +2,10 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import '../css/main.css';
 import '../css/landing-page.css';
-import UserDetailsForm from '../components/user-details-form'
-import UserLoginForm from '../components/user-login-form'
+import SignUpModalForm from '../components/user-signup-modalform'
+import UserLoginModalForm from '../components/user-login-modalform'
 import BasicModal from '../containers/basic-modal'
+import Axios from 'axios';
 
 export default class LandingPage extends React.Component{
   constructor(props) {
@@ -12,7 +13,7 @@ export default class LandingPage extends React.Component{
 
     this.state = {
       modalCaption: 'Sign In',
-      formType: <UserDetailsForm />
+      formType: <SignUpModalForm onSubmit={this.submitLoginData} />
     }
 
     this.onSignInButtonClicked = this.onSignInButtonClicked.bind(this)
@@ -22,14 +23,14 @@ export default class LandingPage extends React.Component{
   onSignInButtonClicked(e) {
     this.setState({
       modalCaption: 'Sign In',
-      formType: <UserLoginForm />
+      formType: <UserLoginModalForm onSubmit={this.submitLoginData} />
     })
   }
 
   onSignUpButtonClicked(e) {
     this.setState({
       modalCaption: 'Sign Up',
-      formType: <UserDetailsForm />
+      formType: <SignUpModalForm />
     })
   }
 
@@ -54,12 +55,7 @@ export default class LandingPage extends React.Component{
       </div>
 
       <BasicModal modalTitle={this.state.modalCaption} modalButtonText={this.state.modalCaption}>
-        <div className='modal-body'>
           {this.state.formType}
-        </div>
-        <div className='modal-footer'>
-          <Link to='/dashboard' className='w-100 px-3 py-3'><button className='btn btn-lg btn-success w-100'>{this.state.modalCaption}</button></Link>
-        </div>
       </BasicModal>
       </>
     );
