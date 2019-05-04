@@ -116,7 +116,7 @@ export default class MainDashboard extends React.Component{
             <h2 className='display-2 text-center py-3 my-0'>Saved Map Points</h2>
             <ul className='px-0 my-0 w-100'>
               {this.state.mapPoints.map( mapPoint => { return (
-                <MapPointEntry key={mapPoint.point_name+"_"+mapPoint.latitude+"-"+mapPoint.longitude}  pointName={mapPoint.point_name} latitude={mapPoint.latitude} longitude={mapPoint.longitude} date={mapPoint.date} onEntryClick={this.handleLoadMapPoint} />
+                <MapPointEntry key={mapPoint.id}  pointName={mapPoint.point_name} latitude={mapPoint.latitude} longitude={mapPoint.longitude} date={mapPoint.date} onEntryClick={this.handleLoadMapPoint} />
               )})
               }
             </ul>
