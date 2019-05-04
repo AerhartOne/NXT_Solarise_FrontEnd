@@ -53,7 +53,7 @@ export default class MainDashboard extends React.Component{
     const lat = this.state.mapCenter[0]
     const lng = this.state.mapCenter[1]
 
-    Axios.get("http://api.sunrise-sunset.org/json?lat=" + lat + "&lng=" + lng + "&date=" + this.state.selectedDate)
+    Axios.get("https://api.sunrise-sunset.org/json?lat=" + lat + "&lng=" + lng + "&date=" + this.state.selectedDate)
     .then(result => {
       this.setState({ 
         solarData: result.data.results,
