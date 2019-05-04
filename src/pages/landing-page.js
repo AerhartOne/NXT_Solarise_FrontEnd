@@ -54,7 +54,7 @@ export default class LandingPage extends React.Component{
         </div>
       </div>
 
-      <BasicModal modalTitle={this.state.modalCaption} modalButtonText={this.state.modalCaption}>
+      <BasicModal id='user-modal' modalTitle={this.state.modalCaption} modalButtonText={this.state.modalCaption}>
           {this.state.formType}
       </BasicModal>
       </>

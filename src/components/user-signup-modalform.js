@@ -2,6 +2,7 @@ import React from 'react';
 import '../css/main.css';
 import Axios from 'axios';
 import UserManagement from '../utils/user_management';
+import { Redirect, withRouter } from 'react-router-dom';
 
 export default class SignUpModalForm extends React.Component{
   constructor(props) {
@@ -12,7 +13,8 @@ export default class SignUpModalForm extends React.Component{
       email: '',
       password: '',
       firstName: '',
-      lastName: ''
+      lastName: '',
+      signupCompleted: false
     }
 
     this.onDataChanged = this.onDataChanged.bind(this)
@@ -31,26 +33,30 @@ export default class SignUpModalForm extends React.Component{
 
   submitSignUpData = (e) => {
     e.preventDefault()
-    let formData = new FormData()    
-    formData.append('username', this.state.username)
-    formData.append('email', this.state.email)
-    formData.append('password', this.state.password)
-    formData.append('first_name', this.state.firstName)
-    formData.append('last_name', this.state.lastName)
-    Axios.post("http://localhost:5000/api/users/new", formData)
-    .then(result => {
-      console.log(result)
-      let data = {
-        username: this.state.username,
-        password: this.state.password
-      }
+    let data = {
+      username: this.state.username,
+      email: this.state.email,
+      password: this.state.password,
+      firstName: this.state.firstName,
+      lastName: this.state.lastName
+    }
+    UserManagement.signupUser(data)
+    .then( () => {
       UserManagement.loginUser(data)
+    })
+    .then( ()  => {
+      this.setState({ signupCompleted: true })
     })
   }
 
   render(){
     return (
       <>
+      { this.state.signupCompleted ? 
+        <Redirect push to='/dashboard' />
+      :
+        null
+      }
       <form className='form-group w-100'>
       
         <div className='modal-body'>

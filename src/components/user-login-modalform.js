@@ -38,6 +38,11 @@ export default class UserLoginModalForm extends React.Component{
   render(){
     return (
       <>
+        { this.state.loginCompleted ? 
+          <Redirect push to='/dashboard' />
+        :
+          null
+        }
         <form className='form-group w-100'>
         <div className='modal-body'>
           <div className='container-fluid mx-0 my-0 px-3 py-0'>
@@ -46,11 +51,6 @@ export default class UserLoginModalForm extends React.Component{
           </div>
           <div className='modal-footer'>
             <button className='btn btn-lg btn-success w-100' onClick={this.submitLoginData}>Sign In</button>
-            { this.state.loginCompleted ? 
-              <Redirect to='/dashboard' />
-            :
-              null
-            }
           </div>
         </div>
         </form>

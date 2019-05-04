@@ -20,4 +20,17 @@ export default class UserManagement {
         localStorage.removeItem('refresh_token')
     }
 
+    static signupUser(userDetails) {
+        let formData = new FormData()
+        formData.append('username', userDetails.username)
+        formData.append('email', userDetails.email)
+        formData.append('password', userDetails.password)
+        formData.append('first_name', userDetails.firstName)
+        formData.append('last_name', userDetails.lastName)
+        return Axios.post("http://localhost:5000/api/users/new", formData)
+        .then(result => {
+          console.log(result)
+        })
+    }
+
 }
